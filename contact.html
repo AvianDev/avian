@@ -10,29 +10,6 @@
     <link href="css/vendor/slick.css" rel="stylesheet" />
     <link href="css/vendor/slick-theme.css" rel="stylesheet" />
     <link href="css/main.css" rel="stylesheet" />
-    <script
-  src="https://code.jquery.com/jquery-3.4.1.js"
-  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-  crossorigin="anonymous"></script>
-  <script
-  src="https://code.jquery.com/jquery-3.4.1.js"
-  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-  crossorigin="anonymous"></script>
-<script>
-  function SubForm (){
-      $.ajax({
-          url:"https://api.apispreadsheets.com/data/9592/",
-          type:"post",
-          data:$("#myForm").serializeArray(),
-          success: function(){
-              alert("Form Data Submitted :)")
-          },
-          error: function(){
-              alert("There was an error :(")
-          }
-      });
-  }
-</script>
 </head>
 <body>
 
@@ -82,11 +59,11 @@
                     <div class="col-md-7">
                         <div class="keep-touch--white">
                             <form action="">
-                                <input name="name" type="text" placeholder="Name">
-                                <input name="email" type="text" placeholder="Email">
-                                <input name="subject" type="text" placeholder="Subject">
-                                <textarea name="message" id="" rows="5" placeholder="Message"></textarea>
-                                <input type="submit" onclick="SubForm()" class="button small">
+                                <input type="text" placeholder="Name">
+                                <input type="text" placeholder="Email">
+                                <input type="text" placeholder="Subject">
+                                <textarea name="" id="" rows="5" placeholder="Message"></textarea>
+                                <input type="submit" class="button small">
                             </form>
                         </div>
                     </div>
