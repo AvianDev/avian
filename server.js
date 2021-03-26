@@ -1,13 +1,23 @@
+require('dotenv').config();
+
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
-const fs = require('fs');
+const expressSanitizer = require('express-sanitizer');
+const Info = require('./models/info');
 
 const app = express();
 
-app.use(express.static(__dirname + '/public/'));
-app.use(bodyParser.urlencoded({ extended: true }));
+// Mongoose Config
+const mongoose = require("mongoose");
+const uri = (process.env.DATABASE_URI) || "mongodb://localhost:27017/DevAce";
+const connect = mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
+// Global Middleware
+app.use(express.static(__dirname + '/public/'));
+app.use(express.urlencoded({ extended: true }));
+app.use(expressSanitizer());
+
+// Routes
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/views/index.html'));
 });
@@ -41,13 +51,24 @@ app.get('/single-portfolio', (req, res) => {
 });
 
 app.post('/contact', (req, res) => {
-    console.log("post route is working");
-    let data = req.body.form;
-    console.log(data);
-    res.sendFile(path.join(__dirname + '/views/contact.html'));
-
+    req.body.form.message = req.sanitize(req.body.form.message);
+    const data = req.body.form;
+    Info.create(data)
+        .then((info) => {
+            info.save()
+                .then((savedData) => {
+                    res.sendFile(path.join(__dirname + '/views/contact.html'));
+                    console.log('The file is saved to the database successfully.');
+                }).catch((err) => { console.error(err); })
+        }).catch((err) => { console.error(err); });
 });
 
+// Mongoose Connection
+connect.then(() => {
+    console.log(`Correctly Connected to MongoDB Server at ${uri}`);
+}).catch((err) => console.log(err));
+
+// Server Connection
 const PORT = process.env.PORT || 3000;
 const HOST = 'localhost';
 app.listen(PORT, () => { console.log(`Server is running at https://${HOST}:${PORT}`) });
