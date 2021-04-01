@@ -65,10 +65,10 @@ app.post('/contact', (req, res) => {
 
 // Mongoose Connection
 connect.then(() => {
-    console.log(`Correctly Connected to MongoDB Server at ${uri}`);
+    console.log(`Correctly Connected to MongoDB Remote Database !!`);
 }).catch((err) => console.log(err));
 
 // Server Connection
 const PORT = process.env.PORT || 3000;
-const HOST = 'localhost';
+const HOST = process.env.HOST || 'localhost';
 app.listen(PORT, () => { console.log(`Server is running at https://${HOST}:${PORT}`) });
